@@ -1,9 +1,9 @@
 // main.js
 
 import * as THREE from 'three';
-// GLB 파일을 로드하는 데 필요한 모듈을 불러옵니다.
+// GLB 파일 로드를 위한 모듈을 불러옵니다.
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-// 마우스로 3D 모델을 회전/줌 할 수 있게 해주는 컨트롤러입니다.
+// 마우스 조작을 위한 컨트롤러 모듈을 불러옵니다.
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 
@@ -22,7 +22,7 @@ document.body.appendChild(renderer.domElement); // 렌더링 결과를 HTML에 �
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.8); // 은은한 주변광
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5); // 방향성 광원 (그림자 연출에 좋음)
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5); // 방향성 광원
 directionalLight.position.set(5, 10, 7).normalize();
 scene.add(directionalLight);
 
@@ -32,7 +32,10 @@ controls.enableDamping = true; // 움직임을 부드럽게 합니다.
 
 
 // 4. GLB 파일 로드!
-// **여기가 변경된 부분입니다!**
+// **오류 수정 부분:** GLTFLoader 인스턴스를 생성합니다.
+const loader = new GLTFLoader(); 
+
+// **파일 경로 설정:** 새로운 파일 이름 'shoes.glb'를 사용합니다.
 const modelPath = 'shoes.glb'; 
 
 loader.load(
@@ -40,6 +43,8 @@ loader.load(
     // 로드 성공 시
     function (gltf) {
         const model = gltf.scene;
+        // 모델의 크기가 너무 크거나 작으면 여기서 조절하세요. (예시: 10배 키우기)
+        // model.scale.set(10, 10, 10); 
         scene.add(model);
         console.log('3D 모델 로드 완료! (shoes.glb)');
     },
